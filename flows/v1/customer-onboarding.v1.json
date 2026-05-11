@@ -1,0 +1,14 @@
+{
+  "name": "customer-onboarding",
+  "version": "1.0",
+  "description": "Onboard a new customer validating CPF and sending notification",
+  "activities": [
+    {"id":"validateCPF","name":"ValidateCPF","queue":"cpf-validation","retries":2,"timeoutMs":5000},
+    {"id":"notifyCustomer","name":"NotifyCustomer","queue":"customer-notification","retries":1,"timeoutMs":3000}
+  ],
+  "transitions": [
+    {"from":"validateCPF","to":"notifyCustomer","condition":"result.success === true"},
+    {"from":"validateCPF","to":"end","condition":"result.success === false"}
+  ],
+  "start":"validateCPF"
+}
